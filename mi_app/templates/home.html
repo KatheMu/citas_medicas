@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Centro Médico</title>
+    <title>Centro Médico - HoraContigo</title>
     <link rel="preconnect" href="https://googleapis.com">
     <link rel="preconnect" href="https://gstatic.com" crossorigin>
-    <link href="https://googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://googleapis.com" rel="stylesheet">
     
     <style>
         body { 
@@ -28,9 +28,10 @@
 
         .contenedor-principal { 
             background: #FFFFFF; padding: 40px; border-radius: 28px; 
-            max-width: 600px; width: 90%;
+            max-width: 1100px; width: 95%; 
             box-shadow: 0px 15px 35px rgba(18, 53, 60, 0.08); 
             border-top: 12px solid #004D54; box-sizing: border-box; z-index: 1;
+            transition: max-width 0.3s ease;
         }
 
         h1 { color: #004D54; font-size: 34px; margin: 0 0 10px 0; font-weight: 700; text-align: center; }
@@ -56,9 +57,12 @@
 
         p.instruccion { color: #005F60; font-size: 22px; font-weight: 600; margin-bottom: 25px; text-align: center; }
         label { display: block; text-align: left; font-size: 18px; font-weight: bold; color: #1A3038; margin-bottom: 8px; }
-        input {
+        
+        /* Cajas de texto e inputs reparados */
+        input[type="text"], input[type="datetime-local"] {
             width: 100%; padding: 15px; font-size: 18px; border: 2px solid #CBD5E1;
             border-radius: 12px; margin-bottom: 20px; box-sizing: border-box; font-family: inherit;
+            display: block; background-color: #FFFFFF; color: #1A3038;
         }
 
         .opciones-grandes { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 25px; }
@@ -92,133 +96,304 @@
         .guia-asistencia {
             margin-top: 30px; background-color: #F0F7F4; padding: 15px;
             border-radius: 12px; border-left: 5px solid #007A87; text-align: left;
+            width: 100%; box-sizing: border-box; clear: both;
         }
         .guia-asistencia p { margin: 0; color: #1A3038; font-size: 16px; font-weight: 600; }
+
+
+        .dashboard-inicio {
+            display: flex; gap: 30px; margin-bottom: 25px; width: 100%; text-align: left;
+        }
+        .columna-izquierda { flex: 1; display: flex; flex-direction: column; gap: 20px; }
+        .columna-derecha { flex: 1.2; background-color: #F7FAFC; border: 2px solid #E2E8F0; border-radius: 24px; padding: 24px; box-sizing: border-box; }
+
+        .tarjeta-enlace {
+            background: #FFFFFF; border-radius: 20px; padding: 24px;
+            display: flex; flex-direction: column; justify-content: space-between;
+            min-height: 175px; box-sizing: border-box; cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease; text-align: left;
+        }
+        .tarjeta-enlace:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(18, 53, 60, 0.06); }
+        .tarjeta-enlace.principal { border: 2px solid #004D54; }
+        .tarjeta-enlace.secundaria { border: 2px solid transparent; background-color: #F0F7F4; }
+        
+        .tarjeta-header { display: flex; align-items: flex-start; gap: 16px; }
+        .tarjeta-icono { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .tarjeta-icono svg { width: 24px; height: 24px; }
+        .icono-oscuro { background-color: #004D54; color: #FFFFFF; }
+        .icono-claro { background-color: #D2E6E1; color: #004D54; }
+        
+        .tarjeta-texto { flex: 1; }
+        .tarjeta-tag { font-size: 11px; font-weight: 700; letter-spacing: 0.8px; display: block; margin-bottom: 6px; }
+        .tag-azul { color: #007A87; }
+        .tag-gris { color: #556B72; }
+        .tarjeta-texto h2 { color: #004D54; font-size: 20px; margin: 0 0 8px 0; font-weight: 700; }
+        .tarjeta-texto p { color: #4A5568; font-size: 14px; line-height: 1.4; margin: 0; }
+        
+        .tarjeta-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding-top: 14px; border-top: 1px solid rgba(0, 0, 0, 0.04); }
+        .texto-accion { font-weight: 700; color: #004D54; font-size: 15px; }
+        
+        .flecha-circular { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .flecha-circular svg { width: 20px; height: 20px; }
+        .flecha-oscura { background-color: #004D54; color: #FFFFFF; }
+        .flecha-clara { background-color: #D2E6E1; color: #004D54; }
+
+        
+        .calendario-nativo { width: 100%; border-collapse: collapse; margin-top: 10px; background: #FFFFFF; border-radius: 14px; overflow: hidden; }
+        .calendario-nativo th, .calendario-nativo td { border: 1px solid #E2E8F0; padding: 12px; text-align: center; font-size: 14px; }
+        .calendario-nativo th { background-color: #004D54; color: #FFFFFF; font-weight: bold; }
+        .calendario-nativo td.ocupado { background-color: #FED7D7; color: #C53030; font-weight: bold; position: relative; }
+        .calendario-nativo td.ocupado::after { content: " 🚫"; font-size: 11px; }
+
+        @media (max-width: 850px) {
+            .dashboard-inicio { flex-direction: column; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="contenedor-principal">
+    <div class="contenedor-principal" id="contenedor">
         
+
         <div class="pantalla-paso activa" id="paso-0">
             <div style="font-size: 65px; margin-bottom: 15px; text-align: center;">🏥</div>
             <h1>{{ nombre_pagina }}</h1>
             <p class="eslogan">{{ eslogan }}</p>
-            <button class="boton-verde" onclick="irAlPaso(1)">Solicitar Cita</button>
-            <div class="guia-asistencia">
-                <p> <strong>Guía simple:</strong> Para reservar una hora médica usted solo debe presionar el botón verde de arriba. El sistema lo guiará paso a paso.</p>
-            </div>
-        </div>
+            
+            <div class="dashboard-inicio">
+                
+    
+                <div class="columna-izquierda">
+                    <!-- Tarjeta Izquierda -->
+                    <div class="tarjeta-enlace principal" onclick="irAlPaso(1)">
+                        <div class="tarjeta-header">
+                            <div class="tarjeta-icono icono-oscuro">
+                                <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm-6-7h-2v3H8v2h3v3h2v-3h3v-2h-3v-3z"/>
+                                </svg>
+                            </div>
+                            <div class="tarjeta-texto">
+                                <span class="tarjeta-tag tag-azul">OPCIÓN PRINCIPAL</span>
+                                <h2>Pedir Cita Médica</h2>
+                                <p>Reserve una nueva hora de atención con nuestros profesionales.</p>
+                                                        </div>
+                    </div>
+                    <div class="tarjeta-footer">
+                        <span class="texto-accion">Empezar ahora</span>
+                        <div class="flecha-circular flecha-oscura">
+                            <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
 
-
-        <div id="barra-progreso-visual" style="display: none;">
-            <div class="barra-pasos">
-                <div class="paso-bolita" id="bolita-1">1</div>
-                <div class="paso-bolita" id="bolita-2">2</div>
-                <div class="paso-bolita" id="bolita-3">3</div>
+                
+                <div class="tarjeta-enlace secundaria" onclick="alert('Módulo de consulta de citas en desarrollo.')">
+                    <div class="tarjeta-header">
+                        <div class="tarjeta-icono icono-claro">
+                            <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm-8-3.5l1.41-1.41L10.83 13H16v-2h-5.17l1.59-1.59L11 8l-4 4 4 4z"/>
+                            </svg>
+                        </div>
+                        <div class="tarjeta-texto">
+                            <span class="tarjeta-tag tag-gris">CONSULTAS EXISTENTES</span>
+                            <h2>Ver Mis Citas</h2>
+                            <p>Consulte hora, modifique la fecha o anule su visita ya agendada.</p>
+                        </div>
+                    </div>
+                    <div class="tarjeta-footer">
+                        <span class="texto-accion">Consultar mis citas</span>
+                        <div class="flecha-circular flecha-clara">
+                            <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <div id="mensaje-error" class="alerta-error"></div>
+            
+            <div class="columna-derecha">
+                <p style="margin: 0 0 10px 0; font-weight: bold; color: #004D54; font-size: 16px;">📅 Horas Médicas Ocupadas este Mes</p>
+                <table class="calendario-nativo">
+                    <thead>
+                        <tr>
+                            <th>Lun</th><th>Mar</th><th>Mié</th><th>Jue</th><th>Vie</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>2</td><td>3</td><td class="ocupado">4</td><td>5</td><td>6</td></tr>
+                        <tr><td>9</td><td class="ocupado">10</td><td>11</td><td>12</td><td>13</td></tr>
+                        <tr><td>16</td><td>17</td><td>18</td><td class="ocupado">19</td><td>20</td></tr>
+                        <tr><td>23</td><td>24</td><td class="ocupado">25</td><td>26</td><td>27</td></tr>
+                    </tbody>
+                </table>
+            </div>
 
-        
-        <div class="pantalla-paso" id="paso-1">
-            <p class="instruccion">Paso 1: Datos del paciente</p>
-            <label for="nombre-paciente">Nombre Completo:</label>
-            <input type="text" id="nombre-paciente" placeholder="Ejemplo: Diego Carrasco">
-            <label for="rut-paciente">RUT:</label>
-            <input type="text" id="rut-paciente" placeholder="Ejemplo: 12.345.678-9">
-            <button class="boton-verde" onclick="irAlPaso(2)">Siguiente Paso</button>
-            <button class="boton-volver" onclick="irAlPaso(0)">Volver al inicio</button>
-            <div class="guia-asistencia">
-                <p> <strong>Guia</strong> Escriba su nombre y RUT en los cuadros blancos, luego presione el botón verde.</p>
-            </div>
-        </div>
+        </div> 
 
-
-        <div class="pantalla-paso" id="paso-2">
-            <p class="instruccion">Paso 2: Seleccione la Especialidad</p>
-            <div class="opciones-grandes">
-                <button class="boton-opcion" onclick="seleccionarEspecialidad(this, 'Medicina General')">Medicina General</button>
-                <button class="boton-opcion" onclick="seleccionarEspecialidad(this, 'Cardiología')">Cardiología</button>
-                <button class="boton-opcion" onclick="seleccionarEspecialidad(this, 'Geriatría')">Geriatría / Adulto Mayor</button>
-            </div>
-            <button class="boton-verde" onclick="irAlPaso(3)">Siguiente Paso</button>
-            <button class="boton-volver" onclick="irAlPaso(1)">Volver al paso anterior</button>
-            <div class="guia-asistencia">
-                <p> <strong>Guia:</strong> Presione uno de los cuadros para elegir su especialidad médica.</p>
-            </div>
-        </div>
-
-        
-        <div class="pantalla-paso" id="paso-3">
-            <p class="instruccion">Paso 3: Revise su solicitudh</p>
-            <div style="background-color: #F7FAFC; padding: 20px; border-radius: 16px; text-align: left; margin-bottom: 25px; border: 2px solid #E2E8F0;">
-                <p style="font-size: 18px; margin: 5px 0;"><strong>Paciente:</strong> <span id="resumen-nombre" style="color: #007A87;"></span></p>
-                <p style="font-size: 18px; margin: 5px 0;"><strong>RUT:</strong> <span id="resumen-rut" style="color: #007A87;"></span></p>
-                <p style="font-size: 18px; margin: 5px 0;"><strong>Especialidad:</strong> <span id="resumen-especialidad" style="color: #007A87;"></span></p>
-            </div>
-            <button class="boton-verde" onclick="finalizarReserva()">Confirmar y Agendar Hora</button>
-            <button class="boton-volver" onclick="irAlPaso(2)">Corregir datos anteriores</button>
-            <div class="guia-asistencia">
-                <p> <strong>Guia:</strong> Si sus datos están correctos, presione el botón verde grande.</p>
-            </div>
+        <div class="guia-asistencia">
+            <p><strong>Guía simple:</strong> A la derecha puede revisar los bloques ocupados (en rojo). A la izquierda presione "Pedir Cita Médica" para reservar.</p>
         </div>
     </div>
-    <script>
-        let especialidadSeleccionada = "";
 
-        function seleccionarEspecialidad(elemento, nombreEspecialidad) {
-            document.querySelectorAll('.boton-opcion').forEach(b => b.classList.remove('seleccionado'));
-            elemento.classList.add('seleccionado');
-            especialidadSeleccionada = nombreEspecialidad;
-            document.getElementById('mensaje-error').style.display = 'none';
+
+    <div id="barra-progreso-visual" style="display: none;">
+        <div class="barra-pasos">
+            <div class="paso-bolita" id="bolita-1">1</div>
+            <div class="paso-bolita" id="bolita-2">2</div>
+            <div class="paso-bolita" id="bolita-3">3</div>
+        </div>
+    </div>
+
+
+    <div id="mensaje-error" class="alerta-error"></div>
+
+
+    <div class="pantalla-paso" id="paso-1">
+        <p class="instruccion">Paso 1: Datos del paciente</p>
+        <label for="nombre-paciente">Nombre Completo:</label>
+        <input type="text" id="nombre-paciente" placeholder="Ejemplo: Diego Carrasco">
+        
+        <label for="rut-paciente">RUT:</label>
+        <input type="text" id="rut-paciente" placeholder="Ejemplo: 12.345.678-9">
+        
+        <button class="boton-verde" onclick="verificarPaso1()">Siguiente Paso</button>
+        <button class="boton-volver" onclick="irAlPaso(0)">Volver al inicio</button>
+    </div>
+
+
+    <div class="pantalla-paso" id="paso-2">
+        <p class="instruccion">Paso 2: Seleccione la Especialidad</p>
+        <div class="opciones-grandes">
+            <button class="boton-opcion" onclick="seleccionarEspecialidad(this, 'Medicina General')">Medicina General</button>
+            <button class="boton-opcion" onclick="seleccionarEspecialidad(this, 'Cardiología')">Cardiología</button>
+            <button class="boton-opcion" onclick="seleccionarEspecialidad(this, 'Geriatría')">Geriatría / Adulto Mayor</button>
+        </div>
+        <button class="boton-verde" onclick="verificarPaso2()">Siguiente Paso</button>
+        <button class="boton-volver" onclick="irAlPaso(1)">Volver al paso anterior</button>
+    </div>
+
+    <!-- PANTALLA: PASO 3 -->
+    <div class="pantalla-paso" id="paso-3">
+        <p class="instruccion">Paso 3: Elija Fecha/Hora y Confirme</p>
+        <div style="background-color: #F7FAFC; padding: 20px; border-radius: 16px; text-align: left; margin-bottom: 25px; border: 2px solid #E2E8F0;">
+            <p style="font-size: 18px; margin: 5px 0;"><strong>Paciente:</strong> <span id="resumen-nombre" style="color: #007A87;"></span></p>
+            <p style="font-size: 18px; margin: 5px 0;"><strong>RUT:</strong> <span id="resumen-rut" style="color: #007A87;"></span></p>
+            <p style="font-size: 18px; margin: 5px 0;"><strong>Especialidad:</strong> <span id="resumen-especialidad" style="color: #007A87;"></span></p>
+        </div>
+
+        <label for="fecha-hora-cita">Seleccione la Fecha y Hora de atención:</label>
+        <input type="datetime-local" id="fecha-hora-cita">
+        <button class="boton-verde" onclick="enviarSolicitudCita()">Confirmar y Agendar Cita</button>
+        <button class="boton-volver" onclick="irAlPaso(2)">Volver al paso anterior</button>
+    </div>
+</div>
+
+<script>
+    let datosCita = {
+        nombre: '',
+        rut: '',
+        especialidad: '',
+        fecha_hora: ''
+    };
+
+    function irAlPaso(paso) {
+        document.getElementById('mensaje-error').style.display = 'none';
+        document.querySelectorAll('.pantalla-paso').forEach(p => p.classList.remove('activa'));
+        
+        const pasoDestino = document.getElementById('paso-' + paso);
+        if(pasoDestino) pasoDestino.classList.add('activa');
+        
+        const contenedor = document.getElementById('contenedor');
+        if (paso === 0) {
+            contenedor.style.maxWidth = "1100px";
+        } else {
+            contenedor.style.maxWidth = "600px";
         }
 
-        function irAlPaso(numeroPaso) {
-            const errorDiv = document.getElementById('mensaje-error');
-            const barraProgreso = document.getElementById('barra-progreso-visual');
-            errorDiv.style.display = 'none';
-
-            if (numeroPaso === 2) {
-                const nombre = document.getElementById('nombre-paciente').value.trim();
-                const rut = document.getElementById('rut-paciente').value.trim();
-                if (!nombre || !rut) {
-                    errorDiv.innerText = "Por favor, ingrese el Nombre y el RUT antes de continuar.";
-                    errorDiv.style.display = 'block';
-                    return;
-                }
-            }
-            if (numeroPaso === 3 && !especialidadSeleccionada) {
-                errorDiv.innerText = "Por favor, seleccione una especialidad médica tocando uno de los botones.";
-                errorDiv.style.display = 'block';
-                return;
-            }
-
-            if (numeroPaso === 0) {
-                barraProgreso.style.display = 'none';
-            } else {
-                barraProgreso.style.display = 'block';
-            }
-
-            if (numeroPaso === 3) {
-                document.getElementById('resumen-nombre').innerText = document.getElementById('nombre-paciente').value;
-                document.getElementById('resumen-rut').innerText = document.getElementById('rut-paciente').value;
-                document.getElementById('resumen-especialidad').innerText = especialidadSeleccionada;
-            }
-
-            document.querySelectorAll('.pantalla-paso').forEach(p => p.classList.remove('activa'));
-            document.getElementById('paso-' + numeroPaso).classList.add('activa');
-
-            document.querySelectorAll('.paso-bolita').forEach((b, index) => {
-                if ((index + 1) <= numeroPaso) b.classList.add('activo');
+        const barra = document.getElementById('barra-progreso-visual');
+        if(paso > 0) {
+            barra.style.display = 'block';
+            document.querySelectorAll('.paso-bolita').forEach((b, idx) => {
+                if(idx + 1 <= paso) b.classList.add('activo');
                 else b.classList.remove('activo');
             });
+        } else {
+            barra.style.display = 'none';
+        }
+    }
+
+    function verificarPaso1() {
+        const nom = document.getElementById('nombre-paciente').value.trim();
+        const rut = document.getElementById('rut-paciente').value.trim();
+        const errorDiv = document.getElementById('mensaje-error');
+
+        if (!nom || !rut) {
+            errorDiv.innerText = "Por favor, complete todos los campos obligatorios.";
+            errorDiv.style.display = "block";
+            return;
+        }
+        
+        datosCita.nombre = nom;
+        datosCita.rut = rut;
+        irAlPaso(2);
+    }
+
+    function seleccionarEspecialidad(btn, especialidad) {
+        document.querySelectorAll('.boton-opcion').forEach(b => b.classList.remove('seleccionado'));
+        btn.classList.add('seleccionado');
+        datosCita.especialidad = especialidad;
+    }
+
+    function verificarPaso2() {
+        const errorDiv = document.getElementById('mensaje-error');
+        if (!datosCita.especialidad) {
+            errorDiv.innerText = "Por favor, elija una especialidad médica antes de continuar.";
+            errorDiv.style.display = "block";
+            return;
         }
 
-        function finalizarReserva() {
-            alert("¡Su cita médica ha sido agendada con éxito!");
-            location.reload();
+        document.getElementById('resumen-nombre').innerText = datosCita.nombre;
+        document.getElementById('resumen-rut').innerText = datosCita.rut;
+        document.getElementById('resumen-especialidad').innerText = datosCita.especialidad;
+        irAlPaso(3);
+    }
+
+    function enviarSolicitudCita() {
+        const fHora = document.getElementById('fecha-hora-cita').value;
+        const errorDiv = document.getElementById('mensaje-error');
+
+        if (!fHora) {
+            errorDiv.innerText = "Debe seleccionar una fecha y hora válidas para agendar.";
+            errorDiv.style.display = "block";
+            return;
+        }
+
+        datosCita.fecha_hora = fHora;
+
+        fetch('', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify(datosCita)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'ok') {
+                alert('¡Cita registrada con éxito en HoraContigo!');
+                window.location.reload();
+            } else {
+                errorDiv.innerText = "Error: " + data.message;
+                errorDiv.style.display = "block";
+            }
+        })
+        .catch(err => {                errorDiv.innerText = "Hubo un problema de conexión al guardar los datos.";
+                errorDiv.style.display = "block";
+            });
         }
     </script>
 </body>
