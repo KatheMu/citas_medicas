@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,180 +8,518 @@
     <link rel="preconnect" href="https://googleapis.com">
     <link rel="preconnect" href="https://gstatic.com" crossorigin>
     <link href="https://googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-    
+    {% load static %}
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+
+    <link rel="icon" type="image/png" href="{% static 'favicon-96x96.png' %}" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="{% static 'favicon.svg' %}" />
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png' %}" />
+    <meta name="apple-mobile-web-app-title" content="HoraContigo" />
+    <link rel="manifest" href="{% static 'site.webmanifest' %}" />
+
     <style>
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            margin: 0; padding: 0; min-height: 100vh;
-            display: flex; align-items: center; justify-content: center; 
-            background-color:#E6F0EC;
-            background-image: 
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #E6F0EC;
+            background-image:
                 linear-gradient(to right, rgba(0, 122, 135, 0.04) 1px, transparent 1px),
                 linear-gradient(to bottom, rgba(0, 122, 135, 0.04) 1px, transparent 1px);
-            background-size: 30px 30px; position: relative; overflow-x: hidden;
+            background-size: 30px 30px;
+            position: relative;
+            overflow-x: hidden;
         }
 
-        body::before, body::after {
-            content: ""; position: absolute; border-radius: 50%; filter: blur(80px); z-index: -1; opacity: 0.4;
+        body::before,
+        body::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.4;
         }
-        body::before { width: 300px; height: 300px; background-color: #A3D9C9; top: -50px; left: -50px; }
-        body::after { width: 400px; height: 400px; background-color: #89C7C7; bottom: -100px; right: -100px; }
 
-        .contenedor-principal { 
-            background: #FFFFFF; padding: 40px; border-radius: 28px; 
-            max-width: 1200px; width: 95%; 
-            box-shadow: 0px 15px 35px rgba(18, 53, 60, 0.08); 
-            border-top: 12px solid #004D54; box-sizing: border-box; z-index: 1;
+        body::before {
+            width: 300px;
+            height: 300px;
+            background-color: #A3D9C9;
+            top: -50px;
+            left: -50px;
+        }
+
+        body::after {
+            width: 400px;
+            height: 400px;
+            background-color: #89C7C7;
+            bottom: -100px;
+            right: -100px;
+        }
+
+        .contenedor-principal {
+            background: #FFFFFF;
+            padding: 40px;
+            border-radius: 28px;
+            max-width: 1200px;
+            width: 95%;
+            box-shadow: 0px 15px 35px rgba(18, 53, 60, 0.08);
+            border-top: 12px solid #004D54;
+            box-sizing: border-box;
+            z-index: 1;
             transition: max-width 0.3s ease;
         }
 
-        h1 { color: #004D54; font-size: 34px; margin: 0 0 10px 0; font-weight: 700; text-align: center; }
-        .eslogan { color: #005F60; font-size: 22px; margin: 0 0 40px 0; font-weight: 600; line-height: 1.4; text-align: center; }
-        
+        h1 {
+            color: #004D54;
+            font-size: 34px;
+            margin: 0 0 10px 0;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .eslogan {
+            color: #005F60;
+            font-size: 22px;
+            margin: 0 0 40px 0;
+            font-weight: 600;
+            line-height: 1.4;
+            text-align: center;
+        }
+
         .barra-pasos {
-            display: flex; justify-content: space-between; margin: 25px 0 35px 0;
-            position: relative; background: #E2E8F0; height: 6px; border-radius: 3px;
+            display: flex;
+            justify-content: space-between;
+            margin: 25px 0 35px 0;
+            position: relative;
+            background: #E2E8F0;
+            height: 6px;
+            border-radius: 3px;
         }
+
         .paso-bolita {
-            width: 40px; height: 40px; background-color: #E2E8F0; color: #4A5568;
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-weight: bold; font-size: 18px; position: relative; top: -17px; z-index: 2;
-            transition: all 0.3s ease; border: 3px solid #FFFFFF;
+            width: 40px;
+            height: 40px;
+            background-color: #E2E8F0;
+            color: #4A5568;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            position: relative;
+            top: -17px;
+            z-index: 2;
+            transition: all 0.3s ease;
+            border: 3px solid #FFFFFF;
         }
+
         .paso-bolita.activo {
-            background-color: #007A87; color: white; transform: scale(1.15);
+            background-color: #007A87;
+            color: white;
+            transform: scale(1.15);
             box-shadow: 0px 4px 10px rgba(0, 122, 135, 0.3);
         }
 
-        .pantalla-paso { display: none; }
-        .pantalla-paso.activa { display: block; }
-
-        p.instruccion { color: #005F60; font-size: 22px; font-weight: 600; margin-bottom: 25px; text-align: center; }
-        label { display: block; text-align: left; font-size: 18px; font-weight: bold; color: #1A3038; margin-bottom: 8px; }
-        
-        input[type="text"], input[type="datetime-local"] {
-            width: 100%; padding: 15px; font-size: 18px; border: 2px solid #CBD5E1;
-            border-radius: 12px; margin-bottom: 20px; box-sizing: border-box; font-family: inherit;
-            display: block; background-color: #FFFFFF; color: #1A3038;
+        .pantalla-paso {
+            display: none;
         }
 
-        .opciones-grandes { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 25px; }
+        .pantalla-paso.activa {
+            display: block;
+        }
+
+        p.instruccion {
+            color: #005F60;
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            text-align: left;
+            font-size: 18px;
+            font-weight: bold;
+            color: #1A3038;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"],
+        input[type="datetime-local"] {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            border: 2px solid #CBD5E1;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            font-family: inherit;
+            display: block;
+            background-color: #FFFFFF;
+            color: #1A3038;
+        }
+
+        .opciones-grandes {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
         .boton-opcion {
-            background-color: #F7FAFC; border: 2px solid #E2E8F0; padding: 20px;
-            border-radius: 16px; font-size: 20px; font-weight: bold; color: #004D54;
-            cursor: pointer; text-align: left; display: flex; align-items: center; gap: 15px;
-        }
-        .boton-opcion.seleccionado {
-            background-color: #E6F0EC; border-color: #007A87; border-width: 3px;
+            background-color: #F7FAFC;
+            border: 2px solid #E2E8F0;
+            padding: 20px;
+            border-radius: 16px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #004D54;
+            cursor: pointer;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
 
-        .boton-verde { 
-            background-color: #007A87; color: white; padding: 22px 40px; 
-            border-radius: 18px; font-size: 26px; font-weight: bold; display: block; width: 100%; border: none;
-            box-shadow: 0px 8px 20px rgba(0, 122, 135, 0.3); cursor: pointer; box-sizing: border-box;
+        .boton-opcion.seleccionado {
+            background-color: #E6F0EC;
+            border-color: #007A87;
+            border-width: 3px;
         }
-        .boton-verde:hover { background-color: #005F60; }
-        
+
+        .boton-verde {
+            background-color: #007A87;
+            color: white;
+            padding: 22px 40px;
+            border-radius: 18px;
+            font-size: 26px;
+            font-weight: bold;
+            display: block;
+            width: 100%;
+            border: none;
+            box-shadow: 0px 8px 20px rgba(0, 122, 135, 0.3);
+            cursor: pointer;
+            box-sizing: border-box;
+        }
+
+        .boton-verde:hover {
+            background-color: #005F60;
+        }
+
         .boton-volver {
-            background: none; border: none; color: #4A5568; font-size: 18px;
-            font-weight: bold; text-decoration: underline; cursor: pointer; margin-top: 20px; display: block; margin-left: auto; margin-right: auto;
+            background: none;
+            border: none;
+            color: #4A5568;
+            font-size: 18px;
+            font-weight: bold;
+            text-decoration: underline;
+            cursor: pointer;
+            margin-top: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .alerta-error {
-            color: #C53030; background-color: #FFF5F5; padding: 12px;
-            border-radius: 8px; font-weight: bold; font-size: 16px; margin-bottom: 15px;
-            display: none; border-left: 4px solid #C53030; text-align: left;
+            color: #C53030;
+            background-color: #FFF5F5;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 15px;
+            display: none;
+            border-left: 4px solid #C53030;
+            text-align: left;
         }
 
         .guia-asistencia {
-            margin-top: 30px; background-color: #F0F7F4; padding: 15px;
-            border-radius: 12px; border-left: 5px solid #007A87; text-align: left;
-            width: 100%; box-sizing: border-box; clear: both;
+            margin-top: 30px;
+            background-color: #F0F7F4;
+            padding: 15px;
+            border-radius: 12px;
+            border-left: 5px solid #007A87;
+            text-align: left;
+            width: 100%;
+            box-sizing: border-box;
+            clear: both;
         }
-        .guia-asistencia p { margin: 0; color: #1A3038; font-size: 16px; font-weight: 600; }
 
-    
-        .dashboard-inicio {
-            display: grid; grid-template-columns: 1fr 1.3fr; gap: 30px; margin-bottom: 25px; width: 100%; text-align: left;
+        .guia-asistencia p {
+            margin: 0;
+            color: #1A3038;
+            font-size: 16px;
+            font-weight: 600;
         }
-        .columna-izquierda { display: flex; flex-direction: column; gap: 20px; }
-        .columna-derecha { background-color: #F7FAFC; border: 2px solid #E2E8F0; border-radius: 24px; padding: 24px; box-sizing: border-box; }
+
+
+        .dashboard-inicio {
+            display: grid;
+            grid-template-columns: 1fr 1.3fr;
+            gap: 30px;
+            margin-bottom: 25px;
+            width: 100%;
+            text-align: left;
+        }
+
+        .columna-izquierda {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .columna-derecha {
+            background-color: #F7FAFC;
+            border: 2px solid #E2E8F0;
+            border-radius: 24px;
+            padding: 24px;
+            box-sizing: border-box;
+        }
 
         .tarjeta-enlace {
-            background: #FFFFFF; border-radius: 20px; padding: 24px;
-            display: flex; flex-direction: column; justify-content: space-between;
-            min-height: 175px; box-sizing: border-box; cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease; text-align: left;
+            background: #FFFFFF;
+            border-radius: 20px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 175px;
+            box-sizing: border-box;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            text-align: left;
         }
-        .tarjeta-enlace:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(18, 53, 60, 0.06); }
-        .tarjeta-enlace.principal { border: 2px solid #004D54; }
-        .tarjeta-enlace.secundaria { border: 2px solid transparent; background-color: #F0F7F4; }
-        
-        .tarjeta-header { display: flex; align-items: flex-start; gap: 16px; }
-        .tarjeta-icono { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .tarjeta-icono svg { width: 24px; height: 24px; }
-        .icono-oscuro { background-color: #004D54; color: #FFFFFF; }
-        .icono-claro { background-color: #D2E6E1; color: #004D54; }
-        
-        .tarjeta-texto { flex: 1; }
-        .tarjeta-tag { font-size: 11px; font-weight: 700; letter-spacing: 0.8px; display: block; margin-bottom: 6px; }
-        .tag-azul { color: #007A87; }
-        .tag-gris { color: #556B72; }
-        .tarjeta-texto h2 { color: #004D54; font-size: 20px; margin: 0 0 8px 0; font-weight: 700; }
-        .tarjeta-texto p { color: #4A5568; font-size: 14px; line-height: 1.4; margin: 0; }
-        
-        .tarjeta-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding-top: 14px; border-top: 1px solid rgba(0, 0, 0, 0.04); }
-        .texto-accion { font-weight: 700; color: #004D54; font-size: 15px; }
-        
-        .flecha-circular { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-        .flecha-circular svg { width: 20px; height: 20px; }
-        .flecha-oscura { background-color: #004D54; color: #FFFFFF; }
-        .flecha-clara { background-color: #D2E6E1; color: #004D54; }
 
-        
+        .tarjeta-enlace:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(18, 53, 60, 0.06);
+        }
+
+        .tarjeta-enlace.principal {
+            border: 2px solid #004D54;
+        }
+
+        .tarjeta-enlace.secundaria {
+            border: 2px solid transparent;
+            background-color: #F0F7F4;
+        }
+
+        .tarjeta-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .tarjeta-icono {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .tarjeta-icono svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .icono-oscuro {
+            background-color: #004D54;
+            color: #FFFFFF;
+        }
+
+        .icono-claro {
+            background-color: #D2E6E1;
+            color: #004D54;
+        }
+
+        .tarjeta-texto {
+            flex: 1;
+        }
+
+        .tarjeta-tag {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .tag-azul {
+            color: #007A87;
+        }
+
+        .tag-gris {
+            color: #556B72;
+        }
+
+        .tarjeta-texto h2 {
+            color: #004D54;
+            font-size: 20px;
+            margin: 0 0 8px 0;
+            font-weight: 700;
+        }
+
+        .tarjeta-texto p {
+            color: #4A5568;
+            font-size: 14px;
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        .tarjeta-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .texto-accion {
+            font-weight: 700;
+            color: #004D54;
+            font-size: 15px;
+        }
+
+        .flecha-circular {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .flecha-circular svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .flecha-oscura {
+            background-color: #004D54;
+            color: #FFFFFF;
+        }
+
+        .flecha-clara {
+            background-color: #D2E6E1;
+            color: #004D54;
+        }
+
+
         .cabecera-calendario {
-            display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
         }
-        .cabecera-calendario h3 { color: #004D54; margin: 0; font-size: 18px; font-weight: 700; }
+
+        .cabecera-calendario h3 {
+            color: #004D54;
+            margin: 0;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
         .btn-cal {
-            background-color: #007A87; color: white; border: none; padding: 8px 14px;
-            border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 14px;
+            background-color: #007A87;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
         }
-        .btn-cal:hover { background-color: #004D54; }
-        
-        .tabla-calendario { width: 100%; border-collapse: collapse; background: #FFFFFF; border-radius: 12px; overflow: hidden; }
-        .tabla-calendario th, .tabla-calendario td { padding: 12px; text-align: center; border: 1px solid #E2E8F0; font-size: 14px; width: 14.28%; }
-        .tabla-calendario th { background-color: #004D54; color: #FFFFFF; font-weight: bold; }
-        .tabla-calendario td { height: 45px; color: #2D3748; }
-        .tabla-calendario td.vacio { background-color: #F7FAFC; }
-        .tabla-calendario td.ocupado { background-color: #FED7D7; color: #C53030; font-weight: bold; }
-        .tabla-calendario td.ocupado::after { content: " 🚫"; font-size: 10px; display: block; }
+
+        .btn-cal:hover {
+            background-color: #004D54;
+        }
+
+        .tabla-calendario {
+            width: 100%;
+            border-collapse: collapse;
+            background: #FFFFFF;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .tabla-calendario th,
+        .tabla-calendario td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #E2E8F0;
+            font-size: 14px;
+            width: 14.28%;
+        }
+
+        .tabla-calendario th {
+            background-color: #004D54;
+            color: #FFFFFF;
+            font-weight: bold;
+        }
+
+        .tabla-calendario td {
+            height: 45px;
+            color: #2D3748;
+        }
+
+        .tabla-calendario td.vacio {
+            background-color: #F7FAFC;
+        }
+
+        .tabla-calendario td.ocupado {
+            background-color: #FED7D7;
+            color: #C53030;
+            font-weight: bold;
+        }
+
+        .tabla-calendario td.ocupado::after {
+            content: " 🚫";
+            font-size: 10px;
+            display: block;
+        }
 
         @media (max-width: 992px) {
-            .dashboard-inicio { grid-template-columns: 1fr; }
+            .dashboard-inicio {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
+
 <body>
 
     <div class="contenedor-principal" id="contenedor">
-    
+
 
         <div class="pantalla-paso activa" id="paso-0">
-            <div style="font-size: 65px; margin-bottom: 15px; text-align: center;">🏥</div>
-            <h1>{{ nombre_pagina }}</h1>
+            <div style="font-size: 65px; margin-bottom: 0px; text-align: center;"><img
+                    src="{% static 'images/logo.png' %}" width="200px"></div>
+            <!-- <h1>{{ nombre_pagina }}</h1> -->
             <p class="eslogan">{{ eslogan }}</p>
-            
+
             <div class="dashboard-inicio">
-                
-            
+
+
                 <div class="columna-izquierda">
                     <div class="tarjeta-enlace principal" onclick="irAlPaso(1)">
                         <div class="tarjeta-header">
                             <div class="tarjeta-icono icono-oscuro">
                                 <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="currentColor">
                                     xmlns="http://w3.org" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm-6-7h-2v3H8v2h3v3h2v-3h3v-2h-3v-3z"/>
+                                    <path
+                                        d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm-6-7h-2v3H8v2h3v3h2v-3h3v-2h-3v-3z" />
                                 </svg>
                             </div>
                             <div class="tarjeta-texto">
@@ -193,18 +532,20 @@
                             <span class="texto-accion">Empezar ahora</span>
                             <div class="flecha-circular flecha-oscura">
                                 <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
                                 </svg>
                             </div>
                         </div>
                     </div>
 
-                
-                    <div class="tarjeta-enlace secundaria" onclick="alert('Módulo de consulta de citas en desarrollo.')">
+
+                    <div class="tarjeta-enlace secundaria"
+                        onclick="alert('Módulo de consulta de citas en desarrollo.')">
                         <div class="tarjeta-header">
                             <div class="tarjeta-icono icono-claro">
                                 <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm-8-3.5l1.41-1.41L10.83 13H16v-2h-5.17l1.59-1.59L11 8l-4 4 4 4z"/>
+                                    <path
+                                        d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm-8-3.5l1.41-1.41L10.83 13H16v-2h-5.17l1.59-1.59L11 8l-4 4 4 4z" />
                                 </svg>
                             </div>
                             <div class="tarjeta-texto">
@@ -217,14 +558,14 @@
                             <span class="texto-accion">Consultar mis citas</span>
                             <div class="flecha-circular flecha-clara">
                                 <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
                                 </svg>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                
+
                 <div class="columna-derecha">
                     <div class="cabecera-calendario">
                         <button class="btn-cal" onclick="cambiarMes(-1)">◀ Anterior</button>
@@ -234,7 +575,13 @@
                     <table class="tabla-calendario">
                         <thead>
                             <tr>
-                                <th>Lu</th><th>Ma</th><th>Mi</th><th>Ju</th><th>Vi</th><th>Sá</th><th>Do</th>
+                                <th>Lu</th>
+                                <th>Ma</th>
+                                <th>Mi</th>
+                                <th>Ju</th>
+                                <th>Vi</th>
+                                <th>Sá</th>
+                                <th>Do</th>
                             </tr>
                         </thead>
                         <tbody id="cuerpo-calendario">
@@ -247,13 +594,15 @@
 
             <div class="guia-asistencia">
                 <p><strong>Guía simple:</strong>
-                    • Agendar una atención: Haga clic en "Pedir Cita Médica" para abrir el formulario interactivo e ingresar sus datos.
+                    • Agendar una atención: Haga clic en "Pedir Cita Médica" para abrir el formulario interactivo e
+                    ingresar sus datos.
 
-                    • Revisar el calendario: Explore la "Agenda Interactiva" a la derecha usando los botones de navegación para ver qué días del año están libres u ocupados (en rojo).</p>
+                    • Revisar el calendario: Explore la "Agenda Interactiva" a la derecha usando los botones de
+                    navegación para ver qué días del año están libres u ocupados (en rojo).</p>
             </div>
-        </div> 
+        </div>
 
-    
+
         <div id="barra-progreso-visual" style="display: none;">
             <div class="barra-pasos">
                 <div class="paso-bolita" id="bolita-1">1</div>
@@ -265,13 +614,13 @@
 
         <div id="mensaje-error" class="alerta-error"></div>
 
-        
+
         <div class="pantalla-paso" id="paso-1">
             <p class="instruccion">Paso 1: Datos del paciente</p>
             <label for="nombre-paciente">Nombre Completo:</label>
             <input type="text" id="nombre-paciente" placeholder="Ejemplo: Diego Carrasco">
             <label for="rut-paciente">RUT:</label>
-            <input type="text" id="rut-paciente" placeholder="Ejemplo: 12.345.678-9">
+            <input type="text" id="rut-paciente" placeholder="Ejemplo: 12345678-9">
             <button class="boton-verde" onclick="verificarPaso1()">Siguiente Paso</button>
             <button class="boton-volver" onclick="irAlPaso(0)">Volver al inicio</button>
         </div>
@@ -280,9 +629,11 @@
         <div class="pantalla-paso" id="paso-2">
             <p class="instruccion">Paso 2: Seleccione la Especialidad</p>
             <div class="opciones-grandes">
-                <button class="boton-opcion" onclick="seleccionarEspecialidad(this, 'Medicina General')">Medicina General</button>
+                <button class="boton-opcion" onclick="seleccionarEspecialidad(this, 'Medicina General')">Medicina
+                    General</button>
                 <button class="boton-opcion" onclick="seleccionarEspecialidad(this, 'Cardiología')">Cardiología</button>
-                <button class="boton-opcion" onclick="seleccionarEspecialidad(this, 'Geriatría')">Geriatría / Adulto Mayor</button>
+                <button class="boton-opcion" onclick="seleccionarEspecialidad(this, 'Geriatría')">Geriatría / Adulto
+                    Mayor</button>
             </div>
             <button class="boton-verde" onclick="verificarPaso2()">Siguiente Paso</button>
             <button class="boton-volver" onclick="irAlPaso(1)">Volver al paso anterior</button>
@@ -291,10 +642,14 @@
 
         <div class="pantalla-paso" id="paso-3">
             <p class="instruccion">Paso 3: Elija Fecha/Hora y Confirme</p>
-            <div style="background-color: #F7FAFC; padding: 20px; border-radius: 16px; text-align: left; margin-bottom: 25px; border: 2px solid #E2E8F0;">
-                <p style="font-size: 18px; margin: 5px 0;"><strong>Paciente:</strong> <span id="resumen-nombre" style="color: #007A87;"></span></p>
-                <p style="font-size: 18px; margin: 5px 0;"><strong>RUT:</strong> <span id="resumen-rut" style="color: #007A87;"></span></p>
-                <p style="font-size: 18px; margin: 5px 0;"><strong>Especialidad:</strong> <span id="resumen-especialidad" style="color: #007A87;"></span></p>
+            <div
+                style="background-color: #F7FAFC; padding: 20px; border-radius: 16px; text-align: left; margin-bottom: 25px; border: 2px solid #E2E8F0;">
+                <p style="font-size: 18px; margin: 5px 0;"><strong>Paciente:</strong> <span id="resumen-nombre"
+                        style="color: #007A87;"></span></p>
+                <p style="font-size: 18px; margin: 5px 0;"><strong>RUT:</strong> <span id="resumen-rut"
+                        style="color: #007A87;"></span></p>
+                <p style="font-size: 18px; margin: 5px 0;"><strong>Especialidad:</strong> <span
+                        id="resumen-especialidad" style="color: #007A87;"></span></p>
             </div>
 
             <label for="fecha-hora-cita">Seleccione la Fecha y Hora de atención:</label>
@@ -309,7 +664,7 @@
         let fechaActual = new Date();
         let fechasOcupadas = [];
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             cargarFechasOcupadas();
         });
 
@@ -329,7 +684,7 @@
         function renderizarCalendario() {
             const cuerpo = document.getElementById('cuerpo-calendario');
             const titulo = document.getElementById('titulo-mes');
-            if(!cuerpo) return;
+            if (!cuerpo) return;
 
             cuerpo.innerHTML = '';
             const año = fechaActual.getFullYear();
@@ -339,11 +694,11 @@
             titulo.innerText = `${mesesAnio[mes]} ${año}`;
 
             let primerDia = new Date(año, mes, 1).getDay();
-            primerDia = primerDia === 0 ? 6 : primerDia - 1; 
+            primerDia = primerDia === 0 ? 6 : primerDia - 1;
             const totalDias = new Date(año, mes + 1, 0).getDate();
 
             let fila = document.createElement('tr');
-            
+
             for (let i = 0; i < primerDia; i++) {
                 let celdaVacia = document.createElement('td');
                 celdaVacia.classList.add('vacio');
@@ -371,7 +726,7 @@
             }
 
             while (fila.children.length < 7) {
-                                let celdaVacia = document.createElement('td');
+                let celdaVacia = document.createElement('td');
                 celdaVacia.classList.add('vacio');
                 fila.appendChild(celdaVacia);
             }
@@ -386,10 +741,10 @@
         function irAlPaso(paso) {
             document.getElementById('mensaje-error').style.display = 'none';
             document.querySelectorAll('.pantalla-paso').forEach(p => p.classList.remove('activa'));
-            
+
             const pasoDestino = document.getElementById('paso-' + paso);
-            if(pasoDestino) pasoDestino.classList.add('activa');
-            
+            if (pasoDestino) pasoDestino.classList.add('activa');
+
             const contenedor = document.getElementById('contenedor');
             if (paso === 0) {
                 contenedor.style.maxWidth = "1100px";
@@ -398,10 +753,10 @@
             }
 
             const barra = document.getElementById('barra-progreso-visual');
-            if(paso > 0) {
+            if (paso > 0) {
                 barra.style.display = 'block';
                 document.querySelectorAll('.paso-bolita').forEach((b, idx) => {
-                    if(idx + 1 <= paso) b.classList.add('activo');
+                    if (idx + 1 <= paso) b.classList.add('activo');
                     else b.classList.remove('activo');
                 });
             } else {
@@ -409,17 +764,56 @@
             }
         }
 
+        function soloTextoYEspacios(texto) {
+            // Permite letras mayúsculas, minúsculas, vocales con tilde, la letra ñ y espacios en blanco
+            const patron = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
+            return patron.test(texto);
+        }
+
+        const Fn = {
+            validaRut: function (rutCompleto) {
+                rutCompleto = rutCompleto.replace(/\./g, '').replace(/-/g, '');
+                if (!/^[0-9]+[0-9kK]{1}$/.test(rutCompleto)) return false;
+
+                const tmp = rutCompleto;
+                const digv = tmp.charAt(tmp.length - 1).toLowerCase();
+                const rut = tmp.substring(0, tmp.length - 1);
+
+                return Fn.dv(rut) == digv;
+            },
+            dv: function (T) {
+                let M = 0, S = 1;
+                for (; T; T = Math.floor(T / 10)) {
+                    S = (S + (T % 10) * (9 - (M++ % 6))) % 11;
+                }
+                return S ? S - 1 : 'k';
+            }
+        };
+
+
         function verificarPaso1() {
             const nom = document.getElementById('nombre-paciente').value.trim();
             const rut = document.getElementById('rut-paciente').value.trim();
             const errorDiv = document.getElementById('mensaje-error');
+
+            if (!soloTextoYEspacios(nom)) {
+                errorDiv.innerText = "Por favor, ingrese un nombre válido. Ej. Juan Perez";
+                errorDiv.style.display = "block";
+                return;
+            }
+
+            if (!Fn.validaRut(rut)) {
+                errorDiv.innerText = "Por favor, ingrese un rut válido.";
+                errorDiv.style.display = "block";
+                return;
+            }
 
             if (!nom || !rut) {
                 errorDiv.innerText = "Por favor, complete todos los campos obligatorios.";
                 errorDiv.style.display = "block";
                 return;
             }
-            
+
             datosCita.nombre = nom;
             datosCita.rut = rut;
             irAlPaso(2);
@@ -454,7 +848,7 @@
                 errorDiv.style.display = "block";
                 return;
             }
-            
+
             datosCita.fecha_hora = fHora;
 
             fetch('', {
@@ -465,23 +859,22 @@
                 },
                 body: JSON.stringify(datosCita)
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'ok') {
-                    alert('¡Cita registrada con éxito en HoraContigo!');
-                    window.location.reload();
-                } else {
-                    errorDiv.innerText = "Error: " + data.message;
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'ok') {
+                        alert('¡Cita registrada con éxito en HoraContigo!');
+                        window.location.reload();
+                    } else {
+                        errorDiv.innerText = "Error: " + data.message;
+                        errorDiv.style.display = "block";
+                    }
+                })
+                .catch(err => {
+                    errorDiv.innerText = "Hubo un problema de conexión al guardar los datos.";
                     errorDiv.style.display = "block";
-                }
-            })
-            .catch(err => {
-                errorDiv.innerText = "Hubo un problema de conexión al guardar los datos.";
-                errorDiv.style.display = "block";
-            });
+                });
         }
     </script>
 </body>
+
 </html>
-
-
