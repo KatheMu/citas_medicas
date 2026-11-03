@@ -94,7 +94,3 @@ citas_medicas/
 | POST | `/` | Crea una cita (JSON: `nombre`, `rut`, `especialidad`, `fecha_hora`) |
 | GET | `/api/disponibilidad/` | Lista de horas ocupadas |
 | GET | `/admin/` | Panel de administración de Django |
-
-## Aviso
-
-Este proyecto maneja datos personales (nombre y RUT). No subas la base de datos (`db.sqlite3`) ni claves secretas al repositorio, y configura `SECRET_KEY`, `DEBUG` y `ALLOWED_HOSTS` de forma segura antes de publicarlo.
