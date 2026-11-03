@@ -495,6 +495,23 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
     </style>
 </head>
 
@@ -504,6 +521,7 @@
 
 
         <div class="pantalla-paso activa" id="paso-0">
+            <button id="btn-logout" class="btn-cal" style="display: block; margin-left: auto;">Cerrar Sesión</button>
             <div style="font-size: 65px; margin-bottom: 0px; text-align: center;"><img
                     src="{% static 'images/logo.png' %}" width="200px"></div>
             <!-- <h1>{{ nombre_pagina }}</h1> -->
@@ -539,8 +557,7 @@
                     </div>
 
 
-                    <div class="tarjeta-enlace secundaria"
-                        onclick="alert('Módulo de consulta de citas en desarrollo.')">
+                    <div class="tarjeta-enlace secundaria" onclick="verCitas()">
                         <div class="tarjeta-header">
                             <div class="tarjeta-icono icono-claro">
                                 <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="currentColor">
@@ -657,6 +674,69 @@
             <button class="boton-verde" onclick="enviarSolicitudCita()">Confirmar y Agendar Cita</button>
             <button class="boton-volver" onclick="irAlPaso(2)">Volver al paso anterior</button>
         </div>
+        <div class="pantalla-paso" id="paso-4">
+
+            <div class="tarjeta-header">
+                <div class="tarjeta-icono icono-claro">
+                    <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm-8-3.5l1.41-1.41L10.83 13H16v-2h-5.17l1.59-1.59L11 8l-4 4 4 4z" />
+                    </svg>
+                </div>
+                <div class="tarjeta-texto">
+                    <span class="tarjeta-tag tag-gris">CONSULTAS EXISTENTES</span>
+                    <h2>Ver Mis Citas</h2>
+                </div>
+            </div>
+
+            <div style="padding-top: 6px;">
+                <input type="text" id="login" placeholder="Ingrese Rut">
+            </div>
+
+            <button class="boton-verde" onclick="iniciarSession()">Iniciar Session</button>
+
+            <button class="boton-volver" onclick="irAlPaso(0)">Volver al inicio</button>
+        </div>
+
+        <div class="pantalla-paso" id="paso-5">
+            <div class="tarjeta-header">
+                <div class="tarjeta-icono icono-claro">
+                    <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm-8-3.5l1.41-1.41L10.83 13H16v-2h-5.17l1.59-1.59L11 8l-4 4 4 4z" />
+                    </svg>
+                </div>
+                <div class="tarjeta-texto">
+                    <span class="tarjeta-tag tag-gris">CONSULTAS EXISTENTES</span>
+                    <h2>Ver Mis Citas</h2>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Paciente</th>
+                        <th>Médico</th>
+                        <th>Fecha y Hora</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cita in citas %}
+                    <tr>
+                        <td>{{ cita.paciente }}</td>
+                        <td>{{ cita.especialidad }}</td>
+                        <td>{{ cita.fecha_hora|date:"d/m/Y H:i" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" style="text-align: center;">No hay citas médicas registradas.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <button class="boton-volver" onclick="irAlPaso(0)">Volver al inicio</button>
+        </div>
     </div>
 
     <script>
@@ -666,10 +746,45 @@
 
         document.addEventListener('DOMContentLoaded', function () {
             cargarFechasOcupadas();
+
+            const rutEnSesion = "{{ rut_buscado }}";
+            const urlParams = new URLSearchParams(window.location.search);
+
+            if (rutEnSesion && urlParams.get('paso') === '5') {
+                // Llamamos a tu función de JavaScript que muestra el div de las citas
+                if (typeof irAlPaso === 'function') {
+                    irAlPaso(5);
+                }
+            }
+
+            if (!rutEnSesion) {
+                document.getElementById('btn-logout').style.display = 'none';
+            }
+        });
+
+        document.getElementById('btn-logout').addEventListener('click', function (e) {
+            e.preventDefault(); // Evita que abra el enlace directamente
+
+            fetch("{% url 'logout' %}", {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'ok') {
+                        // Limpiamos el input de rut y volvemos al paso 1 (por ejemplo)
+                        document.getElementById('login').value = '';
+                        window.location.href = window.location.pathname;
+                    }
+                })
+                .catch(error => console.error('Error:', error));
         });
 
         function cargarFechasOcupadas() {
-            fetch('/api-disponibilidad/')
+            fetch('/api/disponibilidad/')
                 .then(response => response.json())
                 .then(data => {
                     fechasOcupadas = data.map(item => item.start.split('T')[0]);
@@ -734,6 +849,13 @@
         }
 
         function cambiarMes(direccion) {
+            if (direccion == -1) {
+                var dt = new Date();
+                if (fechaActual.getFullYear() <= dt.getFullYear() && fechaActual.getMonth() + direccion < dt.getMonth()) {
+                    direccion = 0;
+                }
+            }
+            
             fechaActual.setMonth(fechaActual.getMonth() + direccion);
             renderizarCalendario();
         }
@@ -753,7 +875,7 @@
             }
 
             const barra = document.getElementById('barra-progreso-visual');
-            if (paso > 0) {
+            if (paso > 0 && paso < 4) {
                 barra.style.display = 'block';
                 document.querySelectorAll('.paso-bolita').forEach((b, idx) => {
                     if (idx + 1 <= paso) b.classList.add('activo');
@@ -837,6 +959,45 @@
             document.getElementById('resumen-rut').innerText = datosCita.rut;
             document.getElementById('resumen-especialidad').innerText = datosCita.especialidad;
             irAlPaso(3);
+        }
+
+        function verCitas() {
+            const rutEnSesion = "{{ rut_buscado }}";
+
+            if (rutEnSesion)
+                irAlPaso(5);
+            else
+                irAlPaso(4);
+        }
+
+        function iniciarSession() {
+
+            const errorDiv = document.getElementById('mensaje-error');
+            var data = {};
+
+            data.login_rut = document.getElementById('login').value;
+
+            fetch('', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'ok') {
+                        window.location.href = window.location.pathname + '?paso=5';
+                    } else {
+                        errorDiv.innerText = "Error: " + data.message;
+                        errorDiv.style.display = "block";
+                    }
+                })
+                .catch(err => {
+                    errorDiv.innerText = "Hubo un problema de conexión.";
+                    errorDiv.style.display = "block";
+                });
         }
 
         function enviarSolicitudCita() {
